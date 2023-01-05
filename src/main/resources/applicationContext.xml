@@ -1,0 +1,205 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:context="http://www.springframework.org/schema/context" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:aop="http://www.springframework.org/schema/aop"
+       xmlns:tx="http://www.springframework.org/schema/tx" xmlns:p="http://www.springframework.org/schema/p" xmlns:util="http://www.springframework.org/schema/util" xmlns:jdbc="http://www.springframework.org/schema/jdbc"
+       xmlns:cache="http://www.springframework.org/schema/cache"
+       xsi:schemaLocation="
+    http://www.springframework.org/schema/context
+    http://www.springframework.org/schema/context/spring-context.xsd
+    http://www.springframework.org/schema/beans
+    http://www.springframework.org/schema/beans/spring-beans.xsd
+    http://www.springframework.org/schema/tx
+    http://www.springframework.org/schema/tx/spring-tx.xsd
+    http://www.springframework.org/schema/jdbc
+    http://www.springframework.org/schema/jdbc/spring-jdbc-3.1.xsd
+    http://www.springframework.org/schema/cache
+    http://www.springframework.org/schema/cache/spring-cache-3.1.xsd
+    http://www.springframework.org/schema/aop
+    http://www.springframework.org/schema/aop/spring-aop.xsd
+    http://www.springframework.org/schema/util
+    http://www.springframework.org/schema/util/spring-util.xsd">
+
+
+    <!--redis配置-->
+    <!-- 连接池配置. --><!--
+    <bean id="jedisPoolConfig" class="redis.clients.jedis.JedisPoolConfig">
+        &lt;!&ndash; 连接池中最大连接数。高版本：maxTotal，低版本：maxActive &ndash;&gt;
+        <property name="maxTotal" value="100" />
+        &lt;!&ndash; 连接池中最大空闲的连接数. &ndash;&gt;
+        <property name="maxIdle" value="10" />
+        &lt;!&ndash; 连接池中最少空闲的连接数. &ndash;&gt;
+        &lt;!&ndash;<property name="minIdle" value="1" />
+        &lt;!&ndash; 当连接池资源耗尽时，调用者最大阻塞的时间，超时将跑出异常。单位，毫秒数;默认为-1.表示永不超时。高版本：maxWaitMillis，低版本：maxWait &ndash;&gt;
+        <property name="maxWaitMillis" value="5000" />
+        &lt;!&ndash; 连接空闲的最小时间，达到此值后空闲连接将可能会被移除。负值(-1)表示不移除. &ndash;&gt;
+        <property name="minEvictableIdleTimeMillis" value="300000" />
+        &lt;!&ndash; 对于“空闲链接”检测线程而言，每次检测的链接资源的个数。默认为3 &ndash;&gt;
+        <property name="numTestsPerEvictionRun" value="3" />
+        &lt;!&ndash; “空闲链接”检测线程，检测的周期，毫秒数。如果为负值，表示不运行“检测线程”。默认为-1. &ndash;&gt;
+        <property name="timeBetweenEvictionRunsMillis" value="60000" />&ndash;&gt;
+        &lt;!&ndash; testOnBorrow:向调用者输出“链接”资源时，是否检测是有有效，如果无效则从连接池中移除，并尝试获取继续获取。默认为false。建议保持默认值. &ndash;&gt;
+        &lt;!&ndash; testOnReturn:向连接池“归还”链接时，是否检测“链接”对象的有效性。默认为false。建议保持默认值.&ndash;&gt;
+        &lt;!&ndash; testWhileIdle:向调用者输出“链接”对象时，是否检测它的空闲超时；默认为false。如果“链接”空闲超时，将会被移除。建议保持默认值. &ndash;&gt;
+        &lt;!&ndash; whenExhaustedAction:当“连接池”中active数量达到阀值时，即“链接”资源耗尽时，连接池需要采取的手段, 默认为1(0:抛出异常。1:阻塞，直到有可用链接资源。2:强制创建新的链接资源) &ndash;&gt;
+    </bean>
+    &lt;!&ndash; Spring提供的Redis连接工厂 &ndash;&gt;
+    <bean id="jedisConnectionFactory" class="org.springframework.data.redis.connection.jedis.JedisConnectionFactory" destroy-method="destroy">
+        &lt;!&ndash; 连接池配置. &ndash;&gt;
+        <property name="poolConfig" ref="jedisPoolConfig" />
+        &lt;!&ndash; Redis服务主机. &ndash;&gt;
+        <property name="hostName" value="localhost" />
+        &lt;!&ndash; Redis服务端口号. &ndash;&gt;
+        <property name="port" value="6379" />
+        &lt;!&ndash; Redis服务连接密码. &ndash;&gt;
+        &lt;!&ndash; <property name="password" value="${redis.password}" /> &ndash;&gt;
+        <property name="database" value="2"/>
+        &lt;!&ndash; 连超时设置. &ndash;&gt;
+        <property name="timeout" value="3000" />
+        &lt;!&ndash; 是否使用连接池. &ndash;&gt;
+        <property name="usePool" value="true" />
+    </bean>
+    &lt;!&ndash; Spring提供的访问Redis类. &ndash;&gt;
+    <bean id="redisTemplate" class="org.springframework.data.redis.core.RedisTemplate">
+        <property name="connectionFactory" ref="jedisConnectionFactory" />
+        <property name="keySerializer">
+            <bean class="org.springframework.data.redis.serializer.StringRedisSerializer" />
+        </property>
+        <property name="valueSerializer">
+            &lt;!&ndash; <bean class="org.springframework.data.redis.serializer.JdkSerializationRedisSerializer" /> &ndash;&gt;
+            <bean class="org.springframework.data.redis.serializer.JdkSerializationRedisSerializer" />
+
+        </property>
+        <property name="enableTransactionSupport" value="false"/>
+    </bean>
+-->
+<!-- 配置自定扫描的包 -->
+    <context:component-scan base-package="D:\workplace\ideawork\TestForEveryday\src\test\java\day0411"></context:component-scan>
+<!--
+    <bean id="propertyConfigure"
+          class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+        <property name="locations">
+            <list>
+                <value>classpath:generator.properties</value>
+            </list>
+        </property>
+    </bean>
+
+    <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+        &lt;!&ndash; 扫描所有dao接口的实现，加入到ioc容器中  &ndash;&gt;
+        <property name="basePackage" value="com.enjoylearning.cache.mapper"></property>
+        <property name="sqlSessionFactoryBeanName" value="sqlSessionFactory"></property>
+    </bean>
+
+
+    <bean id="dataSource" class="com.alibaba.druid.pool.DruidDataSource"
+          init-method="init" destroy-method="close">
+        <property name="driverClassName" value="${jdbc.driverClassName}"/>
+        <property name="url" value="${jdbc.url}"/>
+        <property name="username" value="${jdbc.username}"/>
+        <property name="password" value="${jdbc.password}"/>
+        &lt;!&ndash; 配置初始化大小、最小、最大 &ndash;&gt;
+        <property name="initialSize" value="1"/>
+        <property name="minIdle" value="1"/>
+        <property name="maxActive" value="10"/>
+
+        &lt;!&ndash; 配置获取连接等待超时的时间 &ndash;&gt;
+        <property name="maxWait" value="60000"/>
+
+        &lt;!&ndash; 配置间隔多久才进行一次检测，检测需要关闭的空闲连接，单位是毫秒 &ndash;&gt;
+        <property name="timeBetweenEvictionRunsMillis" value="60000"/>
+
+        &lt;!&ndash; 配置一个连接在池中最小生存的时间，单位是毫秒 &ndash;&gt;
+        <property name="minEvictableIdleTimeMillis" value="300000"/>
+
+        <property name="testWhileIdle" value="true"/>
+
+        &lt;!&ndash; 这里建议配置为TRUE，防止取到的连接不可用 &ndash;&gt;
+        <property name="testOnBorrow" value="false"/>
+        <property name="testOnReturn" value="false"/>
+
+        &lt;!&ndash; 打开PSCache，并且指定每个连接上PSCache的大小 &ndash;&gt;
+        <property name="poolPreparedStatements" value="true"/>
+        <property name="maxPoolPreparedStatementPerConnectionSize"
+                  value="20"/>
+
+        &lt;!&ndash; 这里配置提交方式，默认就是TRUE，可以不用配置 &ndash;&gt;
+
+        &lt;!&ndash;<property name="defaultAutoCommit" value="true"/>&ndash;&gt;
+
+        &lt;!&ndash; 验证连接有效与否的SQL，不同的数据配置不同 &ndash;&gt;
+        <property name="validationQuery" value="select 'x' "/>
+        <property name="filters" value="stat"/>
+      &lt;!&ndash;  <property name="proxyFilters">
+            <list>
+                <ref bean="logFilter"/>
+            </list>
+        </property>&ndash;&gt;
+    </bean>
+
+
+   &lt;!&ndash; <bean id="logFilter" class="com.alibaba.druid.filter.logging.Slf4jLogFilter">
+        <property name="statementExecutableSqlLogEnable" value="false"/>
+    </bean>&ndash;&gt;
+
+    <bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+        <property name="dataSource" ref="dataSource"/>
+        <qualifier value="transactionManager"/>
+    </bean>
+
+    <tx:annotation-driven  transaction-manager="transactionManager"/>
+
+    &lt;!&ndash;
+        <bean id="dataSource"
+              class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+            <property name="driverClassName">
+                <value>com.mysql.jdbc.Driver</value>
+            </property>
+            <property name="url">
+                <value>jdbc:mysql://localhost:3306/transaction</value>
+            </property>
+            <property name="username">
+                <value>root</value>
+            </property>
+            <property name="password">
+                <value>root</value>
+            </property>
+        </bean>&ndash;&gt;
+
+    <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+        <property name="dataSource" ref="dataSource"/>
+        &lt;!&ndash; 文件映射器，指定类文件 &ndash;&gt;
+        &lt;!&ndash;<property name="configLocation" value="classpath:mybatis/mybatis-config.xml"/>&ndash;&gt;
+        &lt;!&ndash; 自动扫描mapping.xml文件 &ndash;&gt;
+        <property name="mapperLocations" value="classpath:resources/ProfitDetailMapper.xml"></property>
+    </bean>-->
+
+    <!-- 配置视图解析器: 如何把 handler 方法返回值解析为实际的物理视图 -->
+    <!--<bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+        <property name="prefix" value="/WEB-INF/views/"></property>
+        <property name="suffix" value=".jsp"></property>
+    </bean>-->
+
+    <!-- 配置视图  BeanNameViewResolver 解析器: 使用视图的名字来解析视图 -->
+    <!-- 通过 order 属性来定义视图解析器的优先级, order 值越小优先级越高 -->
+    <!--<bean class="org.springframework.web.servlet.view.BeanNameViewResolver">
+        <property name="order" value="100"></property>
+    </bean>-->
+
+    <!-- 配置国际化资源文件 -->
+    <!--<bean id="messageSource"
+          class="org.springframework.context.support.ResourceBundleMessageSource">
+        <property name="basename" value="i18n"></property>
+    </bean>-->
+
+    <!-- 配置直接转发的页面 -->
+    <!-- 可以直接相应转发的页面, 而无需再经过 Handler 的方法.  -->
+    <!-- <mvc:view-controller path="/success" view-name="success"/>-->
+
+    <!-- 在实际开发中通常都需配置 mvc:annotation-driven 标签 -->
+    <!--<mvc:annotation-driven></mvc:annotation-driven>-->
+
+    <cache:annotation-driven/>
+<!--
+    <bean id="cacheManager" class="org.springframework.data.redis.cache.RedisCacheManager">
+        <constructor-arg index="0" ref="redisTemplate"/>
+    </bean>-->
+</beans>
