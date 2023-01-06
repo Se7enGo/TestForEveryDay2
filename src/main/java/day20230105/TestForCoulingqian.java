@@ -16,7 +16,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 public class TestForCoulingqian {
 
     //public static int[] a = {1, 2, 5, 10, 20, 50, 100, 1000};
-    public static int[] a = {1,2,5,10};
+
 
     /**
      * 自己写的第一版方案，这个方案有些直接，过于专注题干中的最少min，而没有提炼出状态转移方程
@@ -42,9 +42,10 @@ public class TestForCoulingqian {
         return amount;
     }
 
-    static ConcurrentHashMap<Integer,Integer> temp = new ConcurrentHashMap<>(Integer.MAX_VALUE);
+    static ConcurrentHashMap<Integer, Integer> temp = new ConcurrentHashMap<>(Integer.MAX_VALUE);
+
     public static int solution2(int[] coins, int amount) {
-        if (temp.containsKey(amount)){
+        if (temp.containsKey(amount)) {
             return temp.get(amount);
         }
         if (amount == 0) {
@@ -59,33 +60,38 @@ public class TestForCoulingqian {
         for (int i : coins) {
 
             int result = solution2(coins, amount - i);
-            if (result == -1){
-                if (!temp.containsKey(amount))temp.put(amount,-1);
+            if (result == -1) {
+                if (!temp.containsKey(amount)) temp.put(amount, -1);
                 continue;
             }
             bitcoin = Math.min(result + 1, bitcoin);
         }
-        if (!temp.containsKey(amount))temp.put(amount,bitcoin == Integer.MAX_VALUE ? -1 : bitcoin);
+        if (!temp.containsKey(amount)) temp.put(amount, bitcoin == Integer.MAX_VALUE ? -1 : bitcoin);
         return bitcoin == Integer.MAX_VALUE ? -1 : bitcoin;
     }
 
-    public static int solution3(int[] coins,int amount){
-        int l = amount +1;
-        Vector<Integer> v = new Vector<>(l);
-        for (int i =0;i<l;i++){
-            v.add(i,l);
+    public static int[] a = {1,1000};
+    // 这个方法是自底向上的方法，好处是不需要那么多的内存栈了，当amount比较大，coins数组比较多的时候，不会栈溢出
+    public static int solution3(int[] coins, int amount) {
+        int l = amount + 1;
+        ConcurrentHashMap<Integer, Integer> temp = new ConcurrentHashMap<>(l);
+        for (int i = 0; i < l; i++) {
+            temp.put(i, amount);
         }
-        v.add(0,0);
-        for (int i =0;i<l;i++){
-            for (int coin :coins){
-                if (i - coin < 0){
+        temp.put(0, 0);
+        for (int i = 1; i < l; i++) {
+            for (int coin : coins) {
+                if (i - coin < 0) {
                     continue;
                 }
-                v.add(i,Math.min(v.get(i),1+v.get(i-coin)));
+                int re = Math.min(temp.get(i), 1 + temp.get(i - coin));
+                // 敲出来的代码一直不对，看了v.add的源码注释，解释为vector指定位置添加数据会将原有的数据移开，也就是不会删除
+                // 如果要更新的话，需要先删除后更新，使用map就没这事了。
+                temp.put(i, re);
             }
         }
 
-        return (v.get(amount) == amount + 1) ? -1 : v.get(amount);
+        return (temp.get(amount) == amount + 1) ? -1 : temp.get(amount);
     }
 
     public static void main(String[] args) {
@@ -101,7 +107,7 @@ public class TestForCoulingqian {
         /*a = Arrays.copyOf(a, 0);
         System.out.println("1");*/
 
-        int amount = 28715;
+        int amount = 29915;
         int re = solution3(a, amount);
         if (re == -1) {
             System.out.println("不能够凑出这个金额");
