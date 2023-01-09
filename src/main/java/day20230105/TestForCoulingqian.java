@@ -1,5 +1,6 @@
 package day20230105;
 
+import java.util.Date;
 import java.util.Vector;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -70,7 +71,7 @@ public class TestForCoulingqian {
         return bitcoin == Integer.MAX_VALUE ? -1 : bitcoin;
     }
 
-    public static int[] a = {1,1000};
+    public static int[] a = {1,50,1000};
     // 这个方法是自底向上的方法，好处是不需要那么多的内存栈了，当amount比较大，coins数组比较多的时候，不会栈溢出
     public static int solution3(int[] coins, int amount) {
         int l = amount + 1;
@@ -79,13 +80,15 @@ public class TestForCoulingqian {
             temp.put(i, amount);
         }
         temp.put(0, 0);
-        for (int i = 1; i < l; i++) {
+        for (int i = 0; i < l; i++) {
             for (int coin : coins) {
+                // 如果要记录路径的方式，也就是输出最值的取得结果，需要在作出决定时记录日志 同时可以考虑另外一个问题，如果要在
+                // 多个可行解中（或者最优值有多个时，如何分辨出这多种解）
                 if (i - coin < 0) {
                     continue;
                 }
                 int re = Math.min(temp.get(i), 1 + temp.get(i - coin));
-                // 敲出来的代码一直不对，看了v.add的源码注释，解释为vector指定位置添加数据会将原有的数据移开，也就是不会删除
+                // 敲出来的代码一直不对，看了v.add的源码注释，解释为Vector指定位置添加数据会将原有的数据移开，也就是不会删除
                 // 如果要更新的话，需要先删除后更新，使用map就没这事了。
                 temp.put(i, re);
             }
@@ -107,12 +110,15 @@ public class TestForCoulingqian {
         /*a = Arrays.copyOf(a, 0);
         System.out.println("1");*/
 
-        int amount = 29915;
+        long s = new Date().getTime();
+        System.out.println();
+        int amount = 299153;
         int re = solution3(a, amount);
+        long e = new Date().getTime();
         if (re == -1) {
-            System.out.println("不能够凑出这个金额");
+            System.out.println("不能够凑出这个金额,耗时"+ (e-s) );
         } else {
-            System.out.println(String.format("最少用%s个硬币就可以凑出这个金额", re));
+            System.out.println(String.format("最少用%s个硬币就可以凑出这个金额,耗时%s", re,(e-s)));
         }
 
     }
